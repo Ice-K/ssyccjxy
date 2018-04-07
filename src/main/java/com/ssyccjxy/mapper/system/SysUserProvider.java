@@ -92,10 +92,11 @@ public class SysUserProvider {
             if (user != null) {
                 if (user.getUsername() != null) WHERE("username = #{username}");
                 if (user.getPhone() != null) WHERE("phone = #{phone}");
-                if (user.getRealName() != null) WHERE("real_name LIKE '%'#{realName}'%'");
-                if (user.getDeptName() != null) WHERE("dept_name LIKE '%'#{deptName}'%'");
+                if (user.getRealName() != null) WHERE("real_name LIKE \"%\"#{realName}\"%\"");
+                if (user.getDeptName() != null) WHERE("dept_name LIKE \"%\"#{deptName}\"%\"");
                 if (user.getCreateTime() != null) WHERE("create_time >= createTime");
             }
+            ORDER_BY("update_time DESC");
         }}.toString();
     }
 

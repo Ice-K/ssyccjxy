@@ -1,6 +1,7 @@
 package com.ssyccjxy.service.system.impl;
 
 import com.ssyccjxy.common.enums.ResultEnum;
+import com.ssyccjxy.entity.system.SysMenu;
 import com.ssyccjxy.entity.system.SysUser;
 import com.ssyccjxy.mapper.system.SysUserMapper;
 import com.ssyccjxy.service.system.SysUserService;
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Description：系统用户Service实现类
@@ -41,7 +45,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Transactional
     public int delUser(List<Integer> ids) {
         if (ids == null || ids.size()<=0) {
-            throw new CustomException(ResultEnum.ERROR.getCode(),"参数为空 user = null");
+            throw new CustomException(ResultEnum.ERROR.getCode(),"参数为空 ids = null");
         }
         int result = sysUserMapper.deleteByIds(ids);
         if (result < 1) {
@@ -54,7 +58,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Transactional
     public int delSupUser(List<Integer> ids) {
         if (ids == null || ids.size()<=0) {
-            throw new CustomException(ResultEnum.ERROR.getCode(),"参数为空 user = null");
+            throw new CustomException(ResultEnum.ERROR.getCode(),"参数为空 ids = null");
         }
         boolean flag = true;
         for (Integer id : ids) {
@@ -127,5 +131,42 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public List<SysUser> selectByParams(SysUser user) {
         return sysUserMapper.selectByParams(user);
+    }
+
+
+    @Override
+    public Set<String> selectRoleById(Integer id) {
+        if (id == null) {
+            throw new CustomException(ResultEnum.ERROR.getCode(), "失败，id = null");
+        }
+        List<String> list = sysUserMapper.selectRoleByUserId(id);
+        return new HashSet<>(list);
+    }
+
+    @Override
+    public Set<String> selectPermissionById(Integer id) {
+        if (id == null) {
+            throw new CustomException(ResultEnum.ERROR.getCode(), "失败，id = null");
+        }
+        List<String> list = sysUserMapper.selectPermissionByUserId(id);
+        return new HashSet<>(list);
+    }
+
+    @Override
+    public List<SysMenu> selectMenuById(Integer id) {
+        if (id == null) {
+            throw new CustomException(ResultEnum.ERROR.getCode(), "失败，id = null");
+        }
+        List<SysMenu> list = sysUserMapper.selectMenuById(id);
+        List<SysMenu> newList = new ArrayList<>();
+        Set<SysMenu> set = new HashSet<>();
+        for (SysMenu menu : list) {
+            if (set.add(menu)) {
+                newList.add(menu);
+            }
+        }
+        list.clear();
+        list.addAll(newList);
+        return list;
     }
 }

@@ -1,8 +1,11 @@
 package com.ssyccjxy.service.system;
 
+import com.ssyccjxy.entity.system.SysMenu;
 import com.ssyccjxy.entity.system.SysUser;
+import com.ssyccjxy.entity.system.dto.SysMenuDto;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Description：系统用户Service
@@ -34,7 +37,7 @@ public interface SysUserService {
     /**
      * 修改
      * @param user 修改后的用户信息
-     * @return
+     * @return int
      */
     int updateUser(SysUser user);
 
@@ -43,7 +46,7 @@ public interface SysUserService {
      * 修改密码
      * @param md5 加密后的密码
      * @param id 用户id
-     * @return
+     * @return int
      */
     int restPwd(String md5, Integer id);
 
@@ -69,5 +72,26 @@ public interface SysUserService {
      */
     List<SysUser> selectByParams(SysUser user);
 
+    /**
+     * 根据用户id查找用户的角色代码
+     * @param id 用户id
+     * @return 角色代码集合
+     */
+    Set<String> selectRoleById(Integer id);
+
+
+    /**
+     * 根据用户id查找用户的权限
+     * @param id 用户id
+     * @return 权限结合
+     */
+    Set<String> selectPermissionById(Integer id);
+
+    /**
+     * 根据用户id 查找所拥有的菜单
+     * @param id 用户id
+     * @return 菜单集合
+     */
+    List<SysMenu> selectMenuById(Integer id);
 
 }

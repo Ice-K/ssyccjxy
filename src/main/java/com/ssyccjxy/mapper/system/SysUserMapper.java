@@ -1,9 +1,11 @@
 package com.ssyccjxy.mapper.system;
 
+import com.ssyccjxy.entity.system.SysMenu;
 import com.ssyccjxy.entity.system.SysUser;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface SysUserMapper {
@@ -68,6 +70,25 @@ public interface SysUserMapper {
     @Select("SELECT COUNT(*) FROM sys_user WHERE is_del = 0 AND id = #{id}")
     int selectTotalById(@Param("id") Integer id);
 
+    /** 根据用户id查找用户的角色 */
+    @Select("SELECT r.code FROM sys_user u LEFT JOIN sys_user_role ur ON u.id = ur.user_id LEFT JOIN sys_role r ON ur.role_id = r.id WHERE u.id = #{id}")
+    List<String> selectRoleByUserId(@Param("id") Integer id);
 
-    
+    /** 根据用户id查找用户权限 */
+    @Select("SELECT m.permission FROM sys_user u LEFT JOIN sys_user_role ur ON u.id = ur.user_id LEFT JOIN sys_role r ON ur.role_id = r.id LEFT JOIN sys_role_menu rm ON r.id = rm.role_id LEFT JOIN sys_menu m ON rm.menu_id = m.id WHERE u.id = #{id}")
+    List<String> selectPermissionByUserId(@Param("id") Integer id);
+
+    /** 根据用户id查找用户所拥有的菜单 */
+    @Select("SELECT m.* FROM sys_user u LEFT JOIN sys_user_role ur ON u.id = ur.user_id LEFT JOIN sys_role r ON ur.role_id = r.id LEFT JOIN sys_role_menu rm ON r.id = rm.role_id LEFT JOIN sys_menu m ON rm.menu_id = m.id WHERE m.type <> 1 AND m.is_del = 0 AND m.start = 1 AND u.id = #{id} ORDER BY m.sort")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "pid", column = "pid"),
+            @Result(property = "type", column = "type"),
+            @Result(property = "name", column = "name"),
+            @Result(property = "icon", column = "icon"),
+            @Result(property = "url", column = "url"),
+            @Result(property = "permission", column = "permission"),
+            @Result(property = "sort", column = "sort"),
+    })
+    List<SysMenu> selectMenuById(@Param("id") Integer id);
 }

@@ -1,11 +1,12 @@
 package com.ssyccjxy.web.shiro;
 
 import com.ssyccjxy.common.enums.IsLookEnum;
-import com.ssyccjxy.common.enums.ResultEnum;
+import com.ssyccjxy.entity.system.SysMenu;
 import com.ssyccjxy.entity.system.SysUser;
+import com.ssyccjxy.entity.system.dto.SysMenuDto;
+import com.ssyccjxy.entity.system.dto.SysUserInfo;
 import com.ssyccjxy.service.system.SysUserService;
-import com.ssyccjxy.web.exception.CustomException;
-import com.ssyccjxy.web.util.StringUtil;
+import com.ssyccjxy.web.util.tree.TreeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -15,10 +16,12 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Description：自定义realm 用户认证/授权
@@ -63,9 +66,11 @@ public class MyRealm extends AuthorizingRealm {
         if (user.getIsLook().equals(IsLookEnum.IS_LOOK.getCode())) {
             throw new LockedAccountException();
         }
-
-
-        return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
+        SysUserInfo userInfo = new SysUserInfo();
+        BeanUtils.copyProperties(user, userInfo);
+        List<SysMenu> menus = TreeUtil.getTree(null, sysUserService.selectMenuById(user.getId()));
+        userInfo.setMenus(menus);
+        return new SimpleAuthenticationInfo(userInfo, userInfo.getPassword(), getName());
     }
 
     /**
@@ -78,18 +83,24 @@ public class MyRealm extends AuthorizingRealm {
 
         //1.从principals中获取主分身信息，账号
         SysUser user = (SysUser) principalCollection.getPrimaryPrincipal();
-        //TODO 从数据库中查出授权信息
         //2.从数据库中查询当前用户所拥有的权限信息
-        List<String> userPermission = new ArrayList<>();
+        Set<String> userRole = sysUserService.selectRoleById(user.getId());
+        Set<String> userPermissions = sysUserService.selectPermissionById(user.getId());
         List<String> permissions = new ArrayList<>();
-        userPermission.add("role:all");
-        for (String str : userPermission) {
+        List<String> roles = new ArrayList<>();
+        for (String str : userPermissions) {
             if (StringUtils.isNotBlank(str)) {
                 permissions.add(str.trim());
             }
         }
+        for (String str : userRole) {
+            if (StringUtils.isNotBlank(str)) {
+                roles.add(str.trim());
+            }
+        }
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.addStringPermissions(permissions);
+        info.addRoles(roles);
         return info;
     }
 

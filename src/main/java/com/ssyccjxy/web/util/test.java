@@ -1,5 +1,7 @@
 package com.ssyccjxy.web.util;
 
+import java.util.*;
+
 /**
  * Description：
  * Cteated by wangpeng
@@ -11,7 +13,13 @@ public class test {
 //
 //        System.out.println(HttpIpUtil.getIpInfo("本地"));
 
+        List<String> list = new ArrayList<>();
+        list.add("A");
+        list.add("A");
+        list.add("B");
+        Set<String> set = new HashSet<>(list);
+        String a = Arrays.toString(set.toArray());
 
-        System.out.println(StringUtil.customTimeAsString("sdf"));
+        System.out.println(a);
     }
 }

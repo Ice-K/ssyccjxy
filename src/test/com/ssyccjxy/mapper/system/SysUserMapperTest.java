@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Description：
@@ -60,6 +61,10 @@ public class SysUserMapperTest extends BaseTest{
 
     @Test
     public void selectByParams() {
+        SysUser sysUser = new SysUser();
+        sysUser.setRealName("超级");
+        List<SysUser> list = sysUserMapper.selectByParams(sysUser);
+        logger.info(list.size());
     }
 
     @Test
