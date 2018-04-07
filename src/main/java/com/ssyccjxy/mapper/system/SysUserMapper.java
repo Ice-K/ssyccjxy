@@ -15,11 +15,11 @@ public interface SysUserMapper {
 
     /** 删除用户，逻辑删除 */
     @Update("UPDATE sys_user SET is_del = 1 WHERE id IN (${ids})")
-    int deleteByIds(@Param("ids") List<Integer> ids);
+    int deleteByIds(@Param("ids") String ids);
 
     /** 删除用户，物理删除 */
     @Delete("DELETE FROM sys_user WHERE id IN (${ids})")
-    int deleteSupByIds(@Param("ids") List<Integer> ids);
+    int deleteSupByIds(@Param("ids") String ids);
 
     /** 添加用户 */
     @InsertProvider(type = SysUserProvider.class, method = "insertSql")

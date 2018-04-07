@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ import java.util.Set;
  * Cteated by wangpeng
  * 2018/3/29 15:53
  */
+@Component
 public class MyRealm extends AuthorizingRealm {
     private static final Logger log = LoggerFactory.getLogger(MyRealm.class);
 

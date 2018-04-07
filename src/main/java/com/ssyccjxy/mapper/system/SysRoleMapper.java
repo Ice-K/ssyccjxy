@@ -19,11 +19,11 @@ public interface SysRoleMapper {
 
     /** 删除角色，逻辑删除 */
     @Update("UPDATE sys_role SET is_del = 1 Where id IN (${ids})")
-    int deleteByIds(@Param("ids") List<Integer> ids);
+    int deleteByIds(@Param("ids") String ids);
 
     /** 删除角色, 物理删除 */
     @Delete("DELETE FROM sys_user WHERE ids IN (${ids})")
-    int deleteSupByIds(@Param("ids") List<Integer> ids);
+    int deleteSupByIds(@Param("ids") String ids);
 
     /** 修改角色 */
     @UpdateProvider(type = SysRoleProvider.class, method = "updateSql")

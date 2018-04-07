@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +28,8 @@ public class SysUserMapperTest extends BaseTest{
 
     @Test
     public void deleteByIds() {
+        int result = sysUserMapper.deleteByIds("1");
+        logger.error(result);
     }
 
     @Test

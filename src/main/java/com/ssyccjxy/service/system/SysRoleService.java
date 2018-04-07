@@ -18,10 +18,10 @@ public interface SysRoleService {
     int updateSysRole(SysRole sysRole);
 
     /** 删除/批量删除，逻辑删除. */
-    int deleteSysRole(List<Integer> ids);
+    int deleteSysRole(String ids);
 
     /** 删除/批量删除，物理删除. */
-    int deleteSupSysRole(List<Integer> ids);
+    int deleteSupSysRole(String ids);
 
     /** 根据id查询角色信息. */
     SysRole selectOne(Integer id);

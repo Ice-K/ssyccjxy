@@ -43,8 +43,8 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     @Transactional
-    public int delUser(List<Integer> ids) {
-        if (ids == null || ids.size()<=0) {
+    public int delUser(String ids) {
+        if (!StringUtil.isNotBlank(ids)) {
             throw new CustomException(ResultEnum.ERROR.getCode(),"参数为空 ids = null");
         }
         int result = sysUserMapper.deleteByIds(ids);
@@ -56,20 +56,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     @Transactional
-    public int delSupUser(List<Integer> ids) {
-        if (ids == null || ids.size()<=0) {
+    public int delSupUser(String ids) {
+        if (!StringUtil.isNotBlank(ids)) {
             throw new CustomException(ResultEnum.ERROR.getCode(),"参数为空 ids = null");
-        }
-        boolean flag = true;
-        for (Integer id : ids) {
-            int i = sysUserMapper.selectTotalById(id);
-            if (i >= 1 ) {
-                flag =false;
-                break;
-            }
-        }
-        if (flag) {
-            throw new CustomException(ResultEnum.ERROR.getCode(), "选择的用户不存在");
         }
         int result = sysUserMapper.deleteSupByIds(ids);
         if (result < 1) {

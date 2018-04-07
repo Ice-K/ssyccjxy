@@ -6,6 +6,7 @@ import com.ssyccjxy.mapper.system.SysRoleMapper;
 import com.ssyccjxy.service.system.SysRoleService;
 import com.ssyccjxy.web.exception.CustomException;
 import com.ssyccjxy.web.shiro.MyRealm;
+import com.ssyccjxy.web.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,9 +59,9 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     @Transactional
-    public int deleteSysRole(List<Integer> ids) {
-        if (ids == null) {
-            throw new CustomException(ResultEnum.ERROR.getCode(), "ids = null");
+    public int deleteSysRole(String ids) {
+        if (!StringUtil.isNotBlank(ids)) {
+            throw new CustomException(ResultEnum.ERROR.getCode(), "删除失败，ids = null");
         }
         int result = sysRoleMapper.deleteByIds(ids);
         if (result < 1) {
@@ -72,9 +73,9 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     @Transactional
-    public int deleteSupSysRole(List<Integer> ids) {
-        if (ids == null) {
-            throw new CustomException(ResultEnum.ERROR.getCode(), "ids = null");
+    public int deleteSupSysRole(String ids) {
+        if (!StringUtil.isNotBlank(ids)) {
+            throw new CustomException(ResultEnum.ERROR.getCode(), "删除失败，ids = null");
         }
         int result = sysRoleMapper.deleteSupByIds(ids);
         if (result < 1) {

@@ -13,9 +13,9 @@ public interface SysMenuService {
 
     int addMenu(SysMenu sysMenu);
 
-    int deleteMenu(List<Integer> ids);
+    int deleteMenu(String ids);
 
-    int deleteSupMenu(List<Integer> ids);
+    int deleteSupMenu(String ids);
 
     int updateMenu(SysMenu sysMenu);
 

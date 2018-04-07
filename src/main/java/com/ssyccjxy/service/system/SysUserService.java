@@ -26,13 +26,13 @@ public interface SysUserService {
      * @param ids 用户ids
      * @return int
      */
-    int delUser(List<Integer> ids);
+    int delUser(String ids);
 
     /**
      * 超级删除/批量删除 物理删除
      * @return int
      */
-    int delSupUser(List<Integer> ids);
+    int delSupUser(String ids);
 
     /**
      * 修改

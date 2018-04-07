@@ -6,6 +6,7 @@ import com.ssyccjxy.mapper.system.SysMenuMapper;
 import com.ssyccjxy.service.system.SysMenuService;
 import com.ssyccjxy.web.exception.CustomException;
 import com.ssyccjxy.web.shiro.MyRealm;
+import com.ssyccjxy.web.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +39,9 @@ public class SysMenuServiceImpl implements SysMenuService{
     }
 
     @Override
-    public int deleteMenu(List<Integer> ids) {
-        if (ids == null || ids.size()<1) {
-            throw new CustomException(ResultEnum.ERROR.getCode(), "参数ids = null");
+    public int deleteMenu(String ids) {
+        if (!StringUtil.isNotBlank(ids)) {
+            throw new CustomException(ResultEnum.ERROR.getCode(), "删除失败，ids = null");
         }
         int result = sysMenuMapper.deleteById(ids);
         if (result < 1) {
@@ -51,9 +52,9 @@ public class SysMenuServiceImpl implements SysMenuService{
     }
 
     @Override
-    public int deleteSupMenu(List<Integer> ids) {
-        if (ids == null || ids.size()<1) {
-            throw new CustomException(ResultEnum.ERROR.getCode(), "参数ids = null or size < 1");
+    public int deleteSupMenu(String ids) {
+        if (!StringUtil.isNotBlank(ids)) {
+            throw new CustomException(ResultEnum.ERROR.getCode(), "删除失败，ids = null");
         }
         int result = sysMenuMapper.deleteSupById(ids);
         if (result < 1) {

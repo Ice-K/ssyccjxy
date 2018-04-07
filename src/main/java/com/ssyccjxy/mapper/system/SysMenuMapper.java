@@ -23,11 +23,11 @@ public interface SysMenuMapper {
 
     /** 删除/批量删除，逻辑删除 */
     @Update("UPDATE sys_menu SET is_del = 1 WHERE id IN (${ids})")
-    int deleteById(@Param("ids") List<Integer> ids);
+    int deleteById(@Param("ids") String ids);
 
     /** 删除/批量删除，物理删除 */
     @Delete("DELETE FROM sys_menu WHERE id IN (${ids})")
-    int deleteSupById(@Param("ids") List<Integer> ids);
+    int deleteSupById(@Param("ids") String ids);
 
     /** 根据id查找菜单 */
     @Select("SELECT * FROM sys_menu WHERE is_del = 0 AND id = #{id}")
